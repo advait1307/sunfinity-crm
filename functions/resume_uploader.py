@@ -78,6 +78,6 @@ class OneDriveUploader:
             if self.create_folder(candidate, uploaded_file):
                 return self.upload_file(candidate, uploaded_file)
             else:
-                return Nan
+                return 'NaN'
 
 
