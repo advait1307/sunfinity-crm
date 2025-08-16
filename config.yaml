@@ -1,0 +1,56 @@
+clients:
+  file: excel_files/clients.xlsx
+  fields:
+    - Client Name
+    - Client ID
+    - Type of company
+    - Location
+    - Contact person 1
+    - Contact Person 2
+    - Contact Person 3
+    - Onboarding status
+    - Area of interest
+
+opportunities:
+  file: excel_files/opportunities.xlsx
+  fields:
+    - Client name
+    - Role
+    - Opp ID
+    - Date received
+    - JD
+    - Job Location
+    - Exp bracket
+    - Budget
+    - Expected notice period
+    - Priority
+    - Special comments
+    - Deal Status
+    - Number of candidates shared
+    - Name of candidates shared
+    - Closed on
+
+resumes:
+  file: excel_files/resumes.xlsx
+  fields:
+    - Entry ID
+    - Name
+    - Source
+    - Top Skills
+    - Resume
+    - Location
+    - Current organization
+    - Screener Name
+    - Screener comments
+    - First Interviewer name
+    - First interviewer comments
+    - Identified for roles
+    - Years of experience
+    - Current CTC
+
+onedrive:
+  client_id: cc5853e1-b525-46b9-af84-2b40061c1286
+  client_secret: NT38Q~euJQaeYM4rzvOojkN2-sKpcBqKvYqWkaP~
+  tenant_id: 5775e378-abf7-437d-8ea2-2ad81e4adda6
+  user_email: tech.support@sunfinity.tech
+  user_id: e72c0115-4900-4322-830f-37216cf0c9fd
