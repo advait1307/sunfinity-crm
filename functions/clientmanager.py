@@ -29,4 +29,4 @@ class ClientManager:
         return f"{prefix}{last_id + 1:02d}"
 
     def format_contact(self, name, number, email):
-        return f"{name}  |  {number}  |  {email}" if any([name, number, email]) else 'Nan'
+        return f"{name}  |  {number}  |  {email}" if any([name, number, email]) else 'NaN'

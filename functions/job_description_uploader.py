@@ -51,7 +51,7 @@ class OneDriveJDUploader:
             "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/pdf"
         }
-        folder_path = f"JobDescription/{company.replace(" ", "")}"
+        folder_path = f"JobDescription/{company.replace(' ', '')}"
         folder_path_encoded = urllib.parse.quote(folder_path)
         uploaded_file.name = f'{company}_{role}_{oppid}_{date}_JD.pdf'
         file_path = f"{folder_path_encoded}/{uploaded_file.name}"
