@@ -3,32 +3,32 @@ clients:
   fields:
     - Client Name
     - Client ID
-    - Type of company
+    - Type of Company
     - Location
-    - Contact person 1
+    - Contact Person 1
     - Contact Person 2
     - Contact Person 3
     - Onboarding status
-    - Area of interest
+    - Area of Interest
 
 opportunities:
   file: excel_files/opportunities.xlsx
   fields:
-    - Client name
+    - Client Name
     - Role
     - Opp ID
-    - Date received
+    - Date Received
     - JD
     - Job Location
-    - Exp bracket
+    - Exp Bracket
     - Budget
-    - Expected notice period
+    - Expected Notice Period
     - Priority
     - Special comments
     - Deal Status
-    - Number of candidates shared
-    - Name of candidates shared
-    - Closed on
+    - Number of Candidates Shared
+    - Name of Candidates Shared
+    - Closed On
 
 resumes:
   file: excel_files/resumes.xlsx
@@ -39,13 +39,13 @@ resumes:
     - Top Skills
     - Resume
     - Location
-    - Current organization
+    - Current Organization
     - Screener Name
-    - Screener comments
-    - First Interviewer name
-    - First interviewer comments
-    - Identified for roles
-    - Years of experience
+    - Screener Comments
+    - First Interviewer Name
+    - First interviewer Comments
+    - Identified for Roles
+    - Years of Experience
     - Current CTC
 
 onedrive:
