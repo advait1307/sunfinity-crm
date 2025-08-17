@@ -2,6 +2,7 @@ import os
 import pandas as pd
 
 
+
 class ClientManager:
     def __init__(self, config):
         self.config = config
