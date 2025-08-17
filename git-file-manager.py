@@ -13,6 +13,9 @@ st.set_page_config(layout="wide")
 with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 
+if 'github_token' in st.secrets:
+    config['github_token'] = st.secrets['github_token']
+
 clients_obj = ClientManager(config)
 opportunities_obj = OpportunitiesManager(config)
 resumes_obj = ResumeManager(config)
