@@ -55,7 +55,7 @@ onedrive:
   user_email: tech.support@sunfinity.tech
   user_id: e72c0115-4900-4322-830f-37216cf0c9fd
 
-github_token: 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
+github_token: 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
 github_repo: advait1307/sunfinity-crm
 clients_excel_path: excel_files/clients.xlsx
 opportunities_excel_path: excel_files/opportunities.xlsx
