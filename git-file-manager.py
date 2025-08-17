@@ -8,9 +8,7 @@ with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f)
 
 if 'github_token' in st.secrets:
-    config['github_token'] = st.secrets['github_token']
-st.write('git-token:',config['github_token'])
-    
+    config['github_token'] = st.secrets['github_token']    
 from functions_git.resume_uploader import OneDriveUploader
 from functions_git.clientmanager import ClientManager
 from functions_git.opportunitiesmanger import OpportunitiesManager  # fixed typo
