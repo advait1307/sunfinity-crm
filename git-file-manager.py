@@ -3,6 +3,14 @@ import pandas as pd
 import yaml
 import re
 from datetime import date
+
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
+if 'github_token' in st.secrets:
+    config['github_token'] = st.secrets['github_token']
+st.write('git-token:',config['github_token'])
+    
 from functions_git.resume_uploader import OneDriveUploader
 from functions_git.clientmanager import ClientManager
 from functions_git.opportunitiesmanger import OpportunitiesManager  # fixed typo
@@ -10,11 +18,6 @@ from functions_git.resumemanager import ResumeManager
 from functions_git.job_description_uploader import OneDriveJDUploader
 
 st.set_page_config(layout="wide")
-with open('config.yaml', 'r') as f:
-    config = yaml.safe_load(f)
-
-if 'github_token' in st.secrets:
-    config['github_token'] = st.secrets['github_token']
 
 clients_obj = ClientManager(config)
 opportunities_obj = OpportunitiesManager(config)
