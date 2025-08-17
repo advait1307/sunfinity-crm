@@ -95,7 +95,7 @@ if pages == 'Clients':
                 st.info(f"Updating client: {selected} (ID: {client_row['Client ID']})")
                 company_type = st.text_input('Type of company', client_row['Type of company'])
                 location = st.text_input('Location', client_row['Location'])
-                contact1 = st.text_input('Contact person 1 (Name/number/email)', client_row['Contact person 1'])
+                contact1 = st.text_input('Contact Person 1 (Name/number/email)', client_row['Contact Person 1'])
                 contact2 = st.text_input('Contact Person 2 (Name/number/email)', client_row['Contact Person 2'])
                 contact3 = st.text_input('Contact Person 3 (Name/number/email)', client_row['Contact Person 3'])
                 onboarding = st.selectbox('Onboarding status', ['Completed', 'in-process', 'Rejected'], index=['Completed', 'in-process', 'Rejected'].index(client_row['Onboarding status']))
