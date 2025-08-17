@@ -3,12 +3,11 @@ import pandas as pd
 import yaml
 import re
 from datetime import date
-from functions.resume_uploader import OneDriveUploader
-from functions.clientmanager import ClientManager
-from functions.opportunitiesmanger import OpportunitiesManager
-from functions.resumemanager import ResumeManager
-from functions.job_description_uploader import OneDriveJDUploader
-
+from functions_git.resume_uploader import OneDriveUploader
+from functions_git.clientmanager import ClientManager
+from functions_git.opportunitiesmanger import OpportunitiesManager  # fixed typo
+from functions_git.resumemanager import ResumeManager
+from functions_git.job_description_uploader import OneDriveJDUploader
 
 st.set_page_config(layout="wide")
 with open('config.yaml', 'r') as f:
@@ -19,7 +18,6 @@ opportunities_obj = OpportunitiesManager(config)
 resumes_obj = ResumeManager(config)
 file_upload_obj = OneDriveUploader(config)
 jd_uploader_obj = OneDriveJDUploader(config)
-
 
 pages = st.sidebar.radio('Select Page', ['Clients', 'Opportunities', 'Candidate Manager'])
 
@@ -58,9 +56,9 @@ if pages == 'Clients':
                 new_row = {
                     'Client Name': client_name,
                     'Client ID': str(client_id),
-                    'Type of company': company_type,
+                    'Type of Company': company_type,
                     'Location': location,
-                    'Contact person 1': contact1,
+                    'Contact Person 1': contact1,
                     'Contact Person 2': contact2,
                     'Contact Person 3': contact3,
                     'Onboarding status': onboarding,
@@ -102,9 +100,9 @@ if pages == 'Clients':
                 delete_clicked = st.form_submit_button('Delete')
                 idx = df_clients[df_clients['Client Name'] == selected].index[0]
                 if submitted:
-                    df_clients.at[idx, 'Type of company'] = company_type
+                    df_clients.at[idx, 'Type of Company'] = company_type
                     df_clients.at[idx, 'Location'] = location
-                    df_clients.at[idx, 'Contact person 1'] = contact1
+                    df_clients.at[idx, 'Contact Person 1'] = contact1
                     df_clients.at[idx, 'Contact Person 2'] = contact2
                     df_clients.at[idx, 'Contact Person 3'] = contact3
                     df_clients.at[idx, 'Onboarding status'] = onboarding
@@ -120,11 +118,11 @@ if pages == 'Clients':
 elif pages == 'Opportunities':
     st.title('Opportunities Manager')
     df_clients = clients_obj.load_clients()
-    client_list = df_clients['Client Name'].tolist()
+    client_list = df_clients['Client Name'].tolist() if not df_clients.empty else []
     section = st.radio(' ', ['View Opportunities', 'Insert New Opportunity', 'Update Opportunity'], horizontal=True)
-    df_opps = opportunities_obj.load_opps()
+    df_opps = opportunities_obj.load_opportunites()
     df_resumes = resumes_obj.load_resumes()
-    resume_choices = df_resumes['Name'].tolist() if not df_resumes.empty else []
+    resume_choices = df_resumes['Name'].tolist() if not df_resumes.empty and 'Name' in df_resumes.columns else []
 
     if section == 'View Opportunities':
         if df_opps.empty:
@@ -164,12 +162,12 @@ elif pages == 'Opportunities':
                 priority = st.selectbox('Priority', ['High', 'Medium', 'Low'])
                 special_comments = st.text_area('Special comments')
                 deal_status = st.selectbox('Deal Status', ['Open', 'Closed', 'Hold', 'Won'])
-                jd_file = st.file_uploader('JD (upload file)', type=None)
+                jd_file = st.file_uploader('JD (upload file)')
                 candidate_names = st.multiselect('Name of candidates shared', resume_choices)
-                closed_on = st.date_input('Closed on', value=None, disabled=True)
+                closed_on = st.date_input('Closed on', value=date.today(), disabled=True)
                 submitted = st.form_submit_button('Submit')
                 if submitted:
-                    jd_one_drive_path = jd_uploader_obj.outlook_jd_uploader(client_name, role, str(date_received),opp_id, jd_file) if jd_file else 'No Job Description Uploaded'
+                    jd_one_drive_path = jd_uploader_obj.outlook_jd_uploader(client_name, role, str(date_received), opp_id, jd_file) if jd_file else 'No Job Description Uploaded'
                     candidates_markdown = opportunities_obj.generate_candidate_links(candidate_names, df_resumes)
                     new_row = {
                         'Client name': client_name,
@@ -184,7 +182,7 @@ elif pages == 'Opportunities':
                         'Priority': priority,
                         'Special comments': special_comments,
                         'Deal Status': deal_status,
-                        'Number of candidates shared': 0,
+                        'Number of candidates shared': len(candidate_names),
                         'Name of candidates shared': candidates_markdown,
                         'Closed on': closed_on
                     }
@@ -213,13 +211,16 @@ elif pages == 'Opportunities':
                 current_candidates = re.findall(r'\[([^\]_]+)_resume\]', opp_row['Name of candidates shared']) if pd.notnull(opp_row['Name of candidates shared']) else []
                 candidate_names = st.multiselect('Name of candidates shared', resume_choices, current_candidates)
                 closed_on = st.date_input('Closed on', opp_row['Closed on'] if pd.notnull(opp_row['Closed on']) else date.today())
-                jd_file = st.file_uploader('Upload JD to update the existing one', type=None)
+                jd_file = st.file_uploader('Upload JD to update the existing one')
                 submitted = st.form_submit_button('Update')
                 delete_clicked = st.form_submit_button('Delete')
                 idx = df_opps[df_opps['Opp ID'] == selected].index[0]
                 if submitted:
                     candidates_markdown = opportunities_obj.generate_candidate_links(candidate_names, df_resumes)
                     jd_one_drive_path = jd_uploader_obj.outlook_jd_uploader(client_name, role, str(date_received), selected, jd_file) if jd_file else opp_row['JD']
+                    # Ensure correct dtype before assignment to avoid FutureWarning
+                    if 'Name of candidates shared' in df_opps.columns:
+                        df_opps['Name of candidates shared'] = df_opps['Name of candidates shared'].astype('object')
                     df_opps.at[idx, 'Client name'] = client_name
                     df_opps.at[idx, 'Role'] = role
                     df_opps.at[idx, 'Date received'] = date_received
@@ -233,6 +234,7 @@ elif pages == 'Opportunities':
                     df_opps.at[idx, 'Closed on'] = closed_on
                     df_opps.at[idx, 'JD'] = jd_one_drive_path
                     df_opps.at[idx, 'Name of candidates shared'] = candidates_markdown
+                    df_opps.at[idx, 'Number of candidates shared'] = len(candidate_names)
                     opportunities_obj.save_opps(df_opps)
                     st.success(f'Opportunity {selected} updated!')
                 if delete_clicked:
@@ -245,11 +247,11 @@ elif pages == 'Candidate Manager':
     st.title('Candidate Manager')
     section = st.radio(' ', ['View Resumes', 'Insert New Resume', 'Update Resume'], horizontal=True)
     df_resumes = resumes_obj.load_resumes()
-    df_opps = opportunities_obj.load_opps()
+    df_opps = opportunities_obj.load_opportunites()
     opp_choices = [
         f"{row['Role']} ({row['Client name']}:{row['Opp ID']})"
         for _, row in df_opps[df_opps['Deal Status'] != 'Closed'].iterrows()
-    ]
+    ] if not df_opps.empty else []
 
     if section == 'View Resumes':
         if df_resumes.empty:
@@ -332,7 +334,7 @@ elif pages == 'Candidate Manager':
                     'Current CTC': current_ctc
                 }
                 df_resumes = pd.concat([df_resumes, pd.DataFrame([new_row])], ignore_index=True)
-                resumes_obj.save_resume_file(df_resumes)
+                resumes_obj.save_resumes(df_resumes)
                 st.success(f'Resume for {name} added!')
 
     elif section == 'Update Resume':
@@ -384,10 +386,9 @@ elif pages == 'Candidate Manager':
                     df_resumes.at[idx, 'Screener comments'] = screener_comments
                     df_resumes.at[idx, 'First Interviewer name'] = first_interviewer
                     df_resumes.at[idx, 'First interviewer comments'] = first_interviewer_comments
-                    df_resumes.at[idx, 'Identified for roles'] = identified_roles_str
                     df_resumes.at[idx, 'Years of experience'] = years_exp
                     df_resumes.at[idx, 'Current CTC'] = current_ctc
-                    resumes_obj.save_resume_file(df_resumes)
+                    resumes_obj.save_resumes(df_resumes)
                     st.success(f'Resume for {selected} updated!')
                 if delete_clicked:
                     for opp in prev_roles:
@@ -395,5 +396,5 @@ elif pages == 'Candidate Manager':
                         opportunities_obj.update_candidate_count(df_opps, [opp_id], increment=False)
                     opportunities_obj.save_opps(df_opps)
                     df_resumes = df_resumes.drop(idx).reset_index(drop=True)
-                    resumes_obj.save_resume_file(df_resumes)
+                    resumes_obj.save_resumes(df_resumes)
                     st.success(f'Resume for {selected} deleted!')

@@ -5,7 +5,7 @@ clients:
     - Client ID
     - Type of Company
     - Location
-    - Contact Person 1
+    - Contact person 1
     - Contact Person 2
     - Contact Person 3
     - Onboarding status
@@ -14,21 +14,21 @@ clients:
 opportunities:
   file: excel_files/opportunities.xlsx
   fields:
-    - Client Name
+    - Client name
     - Role
     - Opp ID
-    - Date Received
+    - Date received
     - JD
     - Job Location
-    - Exp Bracket
+    - Exp bracket
     - Budget
-    - Expected Notice Period
+    - Expected notice period
     - Priority
     - Special comments
     - Deal Status
-    - Number of Candidates Shared
-    - Name of Candidates Shared
-    - Closed On
+    - Number of candidates shared
+    - Name of candidates shared
+    - Closed on
 
 resumes:
   file: excel_files/resumes.xlsx
@@ -39,13 +39,13 @@ resumes:
     - Top Skills
     - Resume
     - Location
-    - Current Organization
+    - Current organization
     - Screener Name
-    - Screener Comments
-    - First Interviewer Name
-    - First interviewer Comments
-    - Identified for Roles
-    - Years of Experience
+    - Screener comments
+    - First Interviewer name
+    - First interviewer comments
+    - Identified for roles
+    - Years of experience
     - Current CTC
 
 onedrive:
@@ -54,3 +54,9 @@ onedrive:
   tenant_id: 5775e378-abf7-437d-8ea2-2ad81e4adda6
   user_email: tech.support@sunfinity.tech
   user_id: e72c0115-4900-4322-830f-37216cf0c9fd
+
+github_token: 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
+github_repo: advait1307/sunfinity-crm
+clients_excel_path: excel_files/clients.xlsx
+opportunities_excel_path: excel_files/opportunities.xlsx
+resumes_excel_path: excel_files/resumes.xlsx
